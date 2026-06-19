@@ -1,0 +1,22 @@
+{
+  "name": "careerloop",
+  "version": "2.0.0",
+  "private": true,
+  "type": "module",
+  "description": "CareerLoop \u2014 a modular full-stack teaching app built with Next.js, Auth.js and SQLite.",
+  "engines": {
+    "node": ">=22.5"
+  },
+  "scripts": {
+    "dev": "next dev --turbopack",
+    "build": "next build",
+    "start": "next start",
+    "seed": "node lib/db/seed.js"
+  },
+  "dependencies": {
+    "next": "^15.5.19",
+    "next-auth": "5.0.0-beta.30",
+    "react": "19.2.0",
+    "react-dom": "19.2.0"
+  }
+}

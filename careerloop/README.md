@@ -9,15 +9,16 @@ A modular, beginner-friendly **professional social feed** — built as a single
 Made for teaching: small files, clear names, and a tidy path from a button click
 all the way to the database and back.
 
-> A LinkedIn-style three-column layout with original branding. Post, like,
+> A three-column layout with original branding. Post, like,
 > comment, repost, connect, message, search — all running locally with fake data.
 
 ## Quick start
 
 ```bash
-npm install      # install dependencies
-npm run seed     # create and fill the database (10 users + a full feed)
-npm run dev      # start the dev server
+npm install                 # install dependencies
+cp .env.example .env.local  # create local env (provides AUTH_SECRET for Auth.js)
+npm run seed                # create and fill the database (10 users + a full feed)
+npm run dev                 # start the dev server
 # open http://localhost:3000  ->  log in as  alexchen / alexchen1234
 ```
 

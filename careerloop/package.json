@@ -5,7 +5,7 @@
   "type": "module",
   "description": "CareerLoop \u2014 a modular full-stack teaching app built with Next.js, Auth.js and SQLite.",
   "engines": {
-    "node": ">=22.5"
+    "node": ">=22.13"
   },
   "scripts": {
     "dev": "next dev --turbopack",

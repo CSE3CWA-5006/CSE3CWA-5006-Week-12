@@ -3,7 +3,8 @@
 # Database
 
 One SQLite file (`data/careerloop.db`), created by `npm run seed` from
-`lib/db/schema.sql`. Eight small tables.
+`lib/db/schema.sql`. Eight small tables. (On Windows `npm run seed` silently does
+nothing — see [the README's step 6](../README.md#6-create-and-seed-the-database).)
 
 | Table | What it stores |
 |-------|----------------|
@@ -26,5 +27,5 @@ users 1───* posts 1───* comments
   └──* messages    (sender → recipient)
 ```
 
-The seed creates **10 users, 7 topics, 17 posts, 22 comments, 56 reactions,
+The seed creates **10 users, 10 topics, 17 posts, 22 comments, 56 reactions,
 3 reposts, 9 connections and 6 messages**.

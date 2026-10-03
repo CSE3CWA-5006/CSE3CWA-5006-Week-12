@@ -23,6 +23,18 @@ npm run seed     # 2. build the database and fill it with demo data
 npm run dev      # 3. start at http://localhost:3000
 ```
 
+> **On Windows, `npm run seed` silently does nothing.** It prints the npm banner and
+> exits 0 **without creating any tables or data**, and without printing an error —
+> so the app starts but every login fails. Use this command instead (it works on
+> every platform):
+>
+> ```powershell
+> node --input-type=module -e "import { seedDatabase } from './lib/db/seed.js'; console.log(seedDatabase())"
+> ```
+>
+> See [the README's step 6](../README.md#6-create-and-seed-the-database) for the
+> reason.
+
 The first screen is the **login page**. It is pre-filled with the main demo
 account so you can sign straight in:
 
@@ -30,7 +42,8 @@ account so you can sign straight in:
 - **Password:** `alexchen1234`
 
 To start over at any time, open the **Me** menu (top right) and choose
-**Reset demo data**, or run `npm run seed` again.
+**Reset demo data**, or run `npm run seed` again (on Windows, use the command
+above).
 
 ## 3. The 10 demo accounts
 

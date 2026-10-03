@@ -25,6 +25,16 @@ npm run dev                 # start the dev server
 Requires **Node.js 22.5 or newer** (it uses the built-in `node:sqlite`, so there
 is no database server and no native build step).
 
+> **On Windows, `npm run seed` does not work.** It prints the npm banner and exits
+> 0 **without creating any data** — there is no error message to warn you. Use this
+> command instead (it works on every platform):
+>
+> ```powershell
+> node --input-type=module -e "import { seedDatabase } from './lib/db/seed.js'; console.log(seedDatabase())"
+> ```
+>
+> See [step 6](#6-create-and-seed-the-database) for why.
+
 ## The 10 demo accounts
 
 Every account's password is its username followed by `1234`.
@@ -47,6 +57,13 @@ Every account's password is its username followed by `1234`.
 This is a complete, beginner-friendly manual for running CareerLoop on a fresh
 **Ubuntu 22.04 / 24.04** machine (laptop, VM or EC2). No database server and no
 native build step are required — CareerLoop uses Node's built-in `node:sqlite`.
+
+> **Running on Windows instead?** Everything below works the same way except step 1
+> (install Node with the Windows installer from [nodejs.org](https://nodejs.org)
+> instead of `apt-get`) and three commands:
+> `cp` is fine (PowerShell aliases it), while
+> **`npm run seed`** (see [step 6](#6-create-and-seed-the-database)) and
+> **`PORT=8080 npm start`** (use `$env:PORT=8080; npm start`) behave differently.
 
 ### 1. Requirements
 
@@ -123,8 +140,38 @@ npm run seed
 ```
 
 This runs `lib/db/seed.js`, which applies `lib/db/schema.sql` and fills the
-tables with the demo data (10 users and a full feed). The SQLite file is created
-at `data/careerloop.db`. Re-running `npm run seed` rebuilds it from scratch.
+tables with the demo data. The SQLite file is created at `data/careerloop.db`.
+Re-running `npm run seed` rebuilds it from scratch.
+
+A freshly seeded database contains exactly:
+
+```text
+users 10 · topics 10 · posts 17 · comments 22 · reactions 56 · reposts 3 · connections 9 · messages 6
+```
+
+#### On Windows, `npm run seed` silently does nothing
+
+It prints the npm banner and exits 0 **without creating any tables or data** — and
+without printing an error. The cause is the entry check at the end of
+`lib/db/seed.js`:
+
+```js
+if (import.meta.url === `file://${process.argv[1]}`) {
+  seedDatabase();
+}
+```
+
+`import.meta.url` is a proper file URL with forward slashes
+(`file:///D:/.../lib/db/seed.js`), while `process.argv[1]` is a Windows path with
+backslashes (`D:\...\lib\db\seed.js`). The two strings are never equal, so
+`seedDatabase()` is never called. On Ubuntu they happen to match, which is why the
+same lines work on one platform and fail silently on another.
+
+Import the function and call it directly instead — this works everywhere:
+
+```powershell
+node --input-type=module -e "import { seedDatabase } from './lib/db/seed.js'; console.log(seedDatabase())"
+```
 
 ### 7. Run it
 
@@ -146,7 +193,8 @@ PORT=8080 npm start        # use a different port
 
 ### 8. Resetting the demo data
 
-Run `npm run seed` again to rebuild the database, or use the in-app reset action
+Run `npm run seed` again to rebuild the database (**on Windows use the command in
+[step 6](#6-create-and-seed-the-database)**), or use the in-app reset action
 (which calls `POST /api/reset-demo-data`). Every account's password is its
 username followed by `1234`.
 
@@ -181,9 +229,9 @@ the author copyright notice and make the complete source available to its users.
 | Symptom | Cause / fix |
 |---------|-------------|
 | `ERR_UNKNOWN_BUILTIN_MODULE: node:sqlite` or an experimental-SQLite error | Your Node is older than 22.5, or built without SQLite. Upgrade to Node 22.5+ (Node 24 LTS recommended). |
-| Login always fails | The database has not been seeded — run `npm run seed`. Passwords are `username` + `1234`. |
+| Login always fails | The database has not been seeded. Run `npm run seed` — but **on Windows that command silently does nothing** (see [step 6](#6-create-and-seed-the-database)); use the `node --input-type=module` command there instead. Passwords are `username` + `1234`. |
 | `MissingSecret` / Auth.js error on start | `AUTH_SECRET` is not set in `.env.local`. Generate one with `npx auth secret`. |
-| `EADDRINUSE` (port already in use) | Another process uses port 3000 — run with `PORT=8080 npm start`. |
+| `EADDRINUSE` (port already in use) | Another process uses port 3000. On Linux/macOS: `PORT=8080 npm start`. On PowerShell: `$env:PORT=8080; npm start`. |
 | Login works locally but not behind a proxy | Set `AUTH_TRUST_HOST=true` and `AUTH_URL` to your public URL. |
 
 ## Documentation

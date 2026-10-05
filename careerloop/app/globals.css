@@ -253,9 +253,9 @@ a.reach-row:hover { color:var(--brand); }
 .thread-sub { font-size:12px; }
 
 /* --- v2.3: scrollable side columns, borderless stat rows, guest button --- */
-.col-left, .col-right { max-height:calc(100vh - 92px); overflow-y:auto; padding-right:4px; }
-.col-left::-webkit-scrollbar, .col-right::-webkit-scrollbar { width:8px; }
-.col-left::-webkit-scrollbar-thumb, .col-right::-webkit-scrollbar-thumb { background:#D6DAE3; border-radius:8px; }
+.col-left, .col-center, .col-right { max-height:calc(100vh - 92px); overflow-y:auto; padding-right:4px; }
+.col-left::-webkit-scrollbar, .col-center::-webkit-scrollbar, .col-right::-webkit-scrollbar { width:8px; }
+.col-left::-webkit-scrollbar-thumb, .col-center::-webkit-scrollbar-thumb, .col-right::-webkit-scrollbar-thumb { background:#D6DAE3; border-radius:8px; }
 .reach-row { border-bottom:0; padding:4px 0; font-size:13px; }
 .guest-btn { border-color:var(--brand); color:var(--brand); font-weight:700; }
 .guest-btn:hover { background:#EEF0FB; }
